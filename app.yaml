@@ -1,0 +1,17 @@
+runtime: python38
+instance_class: F1
+env: standard
+service: default
+# 下記は プロジェクト名.wsgi:application のように書きます。
+entrypoint: gunicorn -b :$PORT config.wsgi:application
+ 
+# 下記は includes で環境変数用のsecret.yamlファイルの path を指定しています。
+includes:
+- secrets/secret.yaml
+ 
+handlers:
+  - url: /static
+    static_dir: staticfiles/
+  - url: .*
+    secure: always
+    script: auto
